@@ -4,7 +4,9 @@ import 'package:rxdart/rxdart.dart';
 
 class UserBloc extends BlocBase {
 
-  final _userController = BehaviorSubject();
+  final _userController = BehaviorSubject<List>();
+
+  Stream<List> get outUsers => _userController.stream;
 
   Map<String, Map<String, dynamic>> _user = {};
 
