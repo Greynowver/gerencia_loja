@@ -27,15 +27,27 @@ class UsersTab extends StatelessWidget {
           child: StreamBuilder<List>(
             stream: _userBloc.outUsers,
             builder: (context, snapshot) {
-              return ListView.separated(
+              if(!snapshot.hasData)
+                return Center(child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+                  ),
+                );
+              else if(snapshot.data.length == 0)
+                return Center(
+                  child: Text("Nenhum usuário encontrado!", style: TextStyle(
+                    color: Colors.blueAccent
+                  ),),
+                );
+              else
+                return ListView.separated(
                   itemBuilder: (context, index){
-                    return UserTile();
+                    return UserTile(snapshot.data[index]);
                   },
                   separatorBuilder: (context, index){
                     return Divider();
                   },
-                  itemCount: 5,
-              );
+                  itemCount: snapshot.data.length,
+                );
             }
           ),
         )
