@@ -1,9 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'order_header.dart';
 
 class OrderTile extends StatelessWidget {
+
+  final DocumentSnapshot order;
+
+  OrderTile(this.order);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -11,7 +17,7 @@ class OrderTile extends StatelessWidget {
       child: Card(
         child: ExpansionTile(
           title: Text(
-            "#12345 - Entregue",
+            "#${order.documentID.substring(order.documentID.length - 7, order.documentID.length)} - Entregue",
             style: TextStyle(color: Colors.green),
           ),
           children: <Widget>[
