@@ -1,14 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
-
 import 'order_header.dart';
 
 class OrderTile extends StatelessWidget {
 
   final DocumentSnapshot order;
-  Email email = Email();
 
   dynamic product;
 
