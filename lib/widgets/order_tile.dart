@@ -1,14 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 import 'order_header.dart';
 
 class OrderTile extends StatelessWidget {
 
   final DocumentSnapshot order;
+  Email email = Email();
+
+  dynamic product;
 
   OrderTile(this.order);
+
+  final states = [
+    "", "Em preparação", "Em Transporte", "Aguardando Entrega", "Entregue"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +24,11 @@ class OrderTile extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Card(
         child: ExpansionTile(
+          key: Key(order.documentID),
           title: Text(
-            "#${order.documentID.substring(order.documentID.length - 7, order.documentID.length)} - Entregue",
-            style: TextStyle(color: Colors.green),
+            "#${order.documentID.substring(order.documentID.length - 7, order.documentID.length)} - "
+              "${states[order.data["status"]]}",
+            style: TextStyle(color: order.data["status"] != 4 ? Colors.green[850] : Colors.green),
           ),
           children: <Widget>[
             Padding(
@@ -26,36 +36,45 @@ class OrderTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  OrderHeader(),
+                  OrderHeader(order),
                   Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ListTile(
-                        title: Text("Camiseta Preta P"),
-                        subtitle: Text("camisetas/teste"),
+                    children: order.data["products"].map<Widget>((p){
+                      product = p;
+                      return ListTile(
+                        title: Text(p["product"]["title"] + " " + p["size"]),
+                        subtitle: Text(p["category"] + "/" + p["pid"]),
                         trailing: Text(
-                          "2",
+                          p["quantity"].toString(),
                           style: TextStyle(fontSize: 20),
                         ),
                         contentPadding: EdgeInsets.zero,
-                      )
-                    ],
+                      );
+                    }).toList(),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       FlatButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          Firestore.instance.collection("users").document(order["clientId"])
+                              .collection("orders").document(order.documentID).delete();
+                          order.reference.delete();
+                        },
                         textColor: Colors.red,
                         child: Text("Excluir"),
                       ),
                       FlatButton(
-                        onPressed: (){},
+                        onPressed: order.data["status"] > 1 ? (){
+                          order.reference.updateData({"status": order.data["status"] - 1});
+                        } : null,
                         textColor: Colors.grey[850],
                         child: Text("Regredir"),
                       ),
                       FlatButton(
-                        onPressed: (){},
+                        onPressed: order.data["status"] < 4 ? (){
+                          order.reference.updateData({"status": order.data["status"] + 1});
+                        } : null,
                         textColor: Colors.green,
                         child: Text("Avançar"),
                       ),
@@ -69,4 +88,5 @@ class OrderTile extends StatelessWidget {
       ),
     );
   }
+
 }
