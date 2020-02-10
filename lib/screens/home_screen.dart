@@ -4,6 +4,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:gerenciamento_loja/blocs/orders_bloc.dart';
 import 'package:gerenciamento_loja/blocs/user_bloc.dart';
 import 'package:gerenciamento_loja/tabs/orders_tab.dart';
+import 'package:gerenciamento_loja/tabs/products_tab.dart';
 import 'package:gerenciamento_loja/tabs/signature_tab.dart';
 import 'package:gerenciamento_loja/tabs/users_tab.dart';
 
@@ -85,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: <Widget>[
                 UsersTab(),
                 OrdersTab(),
-                DemoApp(),
+                ProductsTab(),
               ],
             ),
           ),
