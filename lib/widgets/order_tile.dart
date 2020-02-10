@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gerenciamento_loja/tabs/signature_tab.dart';
 import 'order_header.dart';
 
 class OrderTile extends StatelessWidget {
@@ -54,9 +55,11 @@ class OrderTile extends StatelessWidget {
                     children: <Widget>[
                       FlatButton(
                         onPressed: (){
-                          Firestore.instance.collection("users").document(order["clientId"])
+                          /*Firestore.instance.collection("users").document(order["clientId"])
                               .collection("orders").document(order.documentID).delete();
-                          order.reference.delete();
+                          order.reference.delete();*/
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> DemoApp()));
+                          
                         },
                         textColor: Colors.red,
                         child: Text("Excluir"),
