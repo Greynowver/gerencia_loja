@@ -7,10 +7,10 @@ class ProductsTab extends StatefulWidget {
   _ProductsTabState createState() => _ProductsTabState();
 }
 
-class _ProductsTabState extends State<ProductsTab> with AutomaticKeepAliveClientMixin{
+class _ProductsTabState extends State<ProductsTab> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+
 
     return FutureBuilder<QuerySnapshot>(
       future: Firestore.instance.collection("products").getDocuments(),

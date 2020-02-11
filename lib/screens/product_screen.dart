@@ -14,6 +14,19 @@ class ProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    InputDecoration _buildDecoration(String label){
+      return InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.grey)
+      );
+    }
+
+    final _fieldStyle = TextStyle(
+      color: Colors.white,
+      fontSize: 16,
+    );
+
     return Scaffold(
       backgroundColor: Colors.grey[850],
       appBar: AppBar(
@@ -27,7 +40,7 @@ class ProductScreen extends StatelessWidget {
               }
           ),
           IconButton(
-              icon: Icon(Icons.remove),
+              icon: Icon(Icons.save),
               onPressed: (){
 
               }
@@ -36,11 +49,39 @@ class ProductScreen extends StatelessWidget {
       ),
       body: Form(
         key: _formKey,
-        child: ListView(
-          padding: EdgeInsets.all(16),
-          children: <Widget>[
-
-          ],
+        child: StreamBuilder<Map>(
+          stream: _productBloc.outData,
+          builder: (context, snapshot) {
+            if(!snapshot.hasData) return Container();
+            return ListView(
+              padding: EdgeInsets.all(16),
+              children: <Widget>[
+                TextFormField(
+                  initialValue: snapshot.data["title"],
+                  style: _fieldStyle,
+                  decoration: _buildDecoration("Titulo"),
+                  onSaved: (t){},
+                  validator: (t){},
+                ),
+                TextFormField(
+                  initialValue: snapshot.data["description"],
+                  maxLines: 6,
+                  style: _fieldStyle,
+                  decoration: _buildDecoration("Descrição"),
+                  onSaved: (t){},
+                  validator: (t){},
+                ),
+                TextFormField(
+                  initialValue: snapshot.data["price"]?.toStringAsFixed(2),
+                  style: _fieldStyle,
+                  decoration: _buildDecoration("Preço"),
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  onSaved: (t){},
+                  validator: (t){},
+                ),
+              ],
+            );
+          }
         ),
       ),
     );

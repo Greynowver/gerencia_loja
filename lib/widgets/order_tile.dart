@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gerenciamento_loja/tabs/signature_tab.dart';
 import 'order_header.dart';
 
 class OrderTile extends StatelessWidget {
